@@ -11,7 +11,6 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -21,7 +20,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -80,6 +79,47 @@
       color: white;
     }
 
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #e0e0e0;
+      background: white;
+      padding: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .tab-button {
+      padding: 12px 24px;
+      background: transparent;
+      color: #666;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .tab-button.active {
+      color: #667eea;
+      border-bottom-color: #667eea;
+    }
+
+    .tab-button:hover {
+      color: #667eea;
+      transform: none;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
     .dashboard {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -136,13 +176,13 @@
       border-color: #667eea;
     }
 
-    .badges-grid {
+    .badges-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
     }
 
-    .badge-detail {
+    .badge-card {
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       padding: 20px;
       border-radius: 10px;
@@ -153,19 +193,18 @@
       opacity: 0.4;
     }
 
-    .badge-detail:hover {
+    .badge-card:hover {
       transform: scale(1.05);
       border-color: #667eea;
     }
 
-    .badge-detail.unlocked {
+    .badge-card.unlocked {
       background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
       opacity: 1;
-      box-shadow: 0 4px 15px rgba(255, 216, 155, 0.4);
     }
 
     .badge-icon {
-      font-size: 48px;
+      font-size: 36px;
       margin-bottom: 10px;
     }
 
@@ -173,19 +212,12 @@
       font-weight: 600;
       color: #333;
       margin-bottom: 5px;
-      font-size: 14px;
     }
 
     .badge-status {
       font-size: 12px;
       color: #666;
       font-weight: 500;
-    }
-
-    .badge-unlock-progress {
-      font-size: 11px;
-      color: #999;
-      margin-top: 5px;
     }
 
     .timetable {
@@ -341,6 +373,14 @@
       flex: 1;
     }
 
+    .streak-display {
+      font-size: 36px;
+      color: #667eea;
+      font-weight: bold;
+      margin: 15px 0;
+      text-align: center;
+    }
+
     .info-box {
       background: #e8f4f8;
       border-left: 4px solid #667eea;
@@ -366,136 +406,129 @@
       transition: width 0.3s ease;
     }
 
-    /* Study Tasks Section */
-    .study-tasks {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-
-    .study-tasks h2 {
-      color: #667eea;
-      margin-bottom: 15px;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .task-input-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 100px auto;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .task-input-row input {
-      padding: 10px;
-      border: 2px solid #e0e0e0;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .task-input-row input:focus {
-      outline: none;
-      border-color: #667eea;
-    }
-
-    .tasks-list-container {
-      max-height: 300px;
-      overflow-y: auto;
+    .chart-placeholder {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      color: #999;
       margin-top: 15px;
     }
 
-    .study-task-item {
-      display: flex;
-      align-items: center;
-      padding: 12px;
+    .school-timetable {
       background: #f9f9f9;
       border-radius: 8px;
-      margin-bottom: 10px;
-      border-left: 4px solid #667eea;
-      gap: 10px;
+      padding: 20px;
+      margin-top: 15px;
+      overflow-x: auto;
     }
 
-    .study-task-item.completed {
-      background: #e8f5e9;
-      border-left-color: #4caf50;
+    .school-schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
     }
 
-    .study-task-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-    }
-
-    .study-task-content {
-      flex: 1;
-    }
-
-    .study-task-title {
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 4px;
-    }
-
-    .study-task-meta {
-      display: flex;
-      gap: 10px;
-      font-size: 12px;
-      color: #999;
-    }
-
-    .study-task-item.completed .study-task-title {
-      text-decoration: line-through;
-      color: #999;
-    }
-
-    .task-delete {
-      background: #ff6b6b;
+    .class-slot {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      transition: all 0.3s ease;
-    }
-
-    .task-delete:hover {
-      background: #ee5a52;
-    }
-
-    .empty-message {
+      padding: 20px;
+      border-radius: 10px;
       text-align: center;
-      padding: 30px;
-      color: #999;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
 
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #4caf50;
-      color: white;
-      padding: 16px 24px;
+    .class-slot-time {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .class-slot-subject {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .class-slot-teacher {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .generated-schedule {
+      background: #f0f9ff;
+      border-left: 4px solid #667eea;
+      padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 2000;
-      animation: slideInRight 0.3s ease;
+      margin-top: 15px;
     }
 
-    @keyframes slideInRight {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .schedule-item:last-child {
+      border-bottom: none;
+    }
+
+    .schedule-time {
+      font-weight: 600;
+      color: #667eea;
+      min-width: 100px;
+    }
+
+    .schedule-activity {
+      color: #555;
+    }
+
+    .schedule-duration {
+      color: #999;
+      font-size: 12px;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .institution-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border-left: 4px solid #667eea;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .institution-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .institution-name {
+      font-weight: 600;
+      color: #667eea;
+      font-size: 16px;
+    }
+
+    .institution-time {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .remove-btn {
+      background: #ff6b6b;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .remove-btn:hover {
+      background: #ee5a52;
     }
 
     @media (max-width: 768px) {
@@ -518,8 +551,17 @@
         justify-content: center;
       }
 
-      .task-input-row {
+      .badges-container {
         grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        flex-wrap: wrap;
+      }
+
+      .tab-button {
+        padding: 10px 16px;
+        font-size: 13px;
       }
     }
 
@@ -532,7 +574,7 @@
       .header-actions,
       button,
       .modal,
-      .task-delete {
+      .tabs {
         display: none;
       }
 
@@ -558,149 +600,212 @@
       </div>
     </header>
 
-    <!-- Study Tasks Section -->
-    <div class="study-tasks">
-      <h2><i class="fas fa-tasks"></i> Today's Study Tasks</h2>
-      <div class="task-input-row">
-        <input type="text" id="taskSubject" placeholder="Subject (e.g., Math, History)">
-        <input type="text" id="taskTopic" placeholder="Topic (e.g., Calculus, Chapter 3)">
-        <input type="number" id="taskTime" placeholder="Time (hrs)" min="0.5" max="8" step="0.5" value="1">
-        <button onclick="addStudyTask()"><i class="fas fa-plus"></i> Add Task</button>
-      </div>
-      <div class="tasks-list-container" id="tasksContainer">
-        <div class="empty-message">No tasks added yet. Add one to get started!</div>
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <button class="tab-button active" onclick="switchTab('dashboard')">
+        <i class="fas fa-th-large"></i> Dashboard
+      </button>
+      <button class="tab-button" onclick="switchTab('school')">
+        <i class="fas fa-school"></i> School/Academy
+      </button>
+      <button class="tab-button" onclick="switchTab('generated')">
+        <i class="fas fa-calendar-check"></i> Generated Timetable
+      </button>
+    </div>
+
+    <!-- Dashboard Tab -->
+    <div id="dashboard" class="tab-content active">
+      <div class="dashboard">
+        <!-- Quick Stats Card -->
+        <div class="card">
+          <h2><i class="fas fa-chart-line"></i> Quick Stats</h2>
+          <div class="stat">
+            <span>📈 Current Streak</span>
+            <span class="stat-value" id="streakDisplay">0 days</span>
+          </div>
+          <div class="stat">
+            <span>⏰ Wake Time</span>
+            <span class="stat-value" id="wakeTimeDisplay">7:00 AM</span>
+          </div>
+          <div class="stat">
+            <span>🎯 Study Target</span>
+            <span class="stat-value" id="studyTargetDisplay">0 hrs</span>
+          </div>
+          <div class="stat">
+            <span>😴 Sleep Hours</span>
+            <span class="stat-value" id="sleepHoursDisplay">0 hrs</span>
+          </div>
+          <button style="margin-top: 15px; width: 100%;" onclick="logTodaySession()">
+            <i class="fas fa-check-circle"></i> Log Today's Session
+          </button>
+        </div>
+
+        <!-- Badges Card -->
+        <div class="card">
+          <h2><i class="fas fa-trophy"></i> Achievements</h2>
+          <div class="badges-container">
+            <div class="badge-card" id="badgeEarlyBird">
+              <div class="badge-icon">🌅</div>
+              <div class="badge-name">Early Bird</div>
+              <div class="badge-status" id="tagEarlyBird">Locked</div>
+            </div>
+            <div class="badge-card" id="badgeStreak">
+              <div class="badge-icon">🔥</div>
+              <div class="badge-name">On Fire</div>
+              <div class="badge-status" id="tagStreak">Locked</div>
+            </div>
+            <div class="badge-card" id="badgeMaster">
+              <div class="badge-icon">🎓</div>
+              <div class="badge-name">Study Master</div>
+              <div class="badge-status" id="tagMaster">Locked</div>
+            </div>
+            <div class="badge-card" id="badgeBalanced">
+              <div class="badge-icon">⚖️</div>
+              <div class="badge-name">Balanced Life</div>
+              <div class="badge-status" id="tagBalanced">Locked</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Focus Timer Card -->
+        <div class="card">
+          <h2><i class="fas fa-bolt"></i> Focus Timer</h2>
+          <div class="info-box">
+            <strong>Ready to focus?</strong> Click the button below to start a distraction-free study session.
+          </div>
+          <button style="margin-top: 15px; width: 100%;" onclick="toggleFocusMode()">
+            <i class="fas fa-play"></i> Start Focus Session
+          </button>
+        </div>
+
+        <!-- Weekly Schedule Card -->
+        <div class="card">
+          <h2><i class="fas fa-calendar-alt"></i> Weekly Schedule</h2>
+          <div class="timetable" id="timetableContainer">
+            <div class="day-slot">
+              <strong>Mon</strong>
+              <small id="mon-hours">8 hrs</small>
+            </div>
+            <div class="day-slot">
+              <strong>Tue</strong>
+              <small id="tue-hours">8 hrs</small>
+            </div>
+            <div class="day-slot">
+              <strong>Wed</strong>
+              <small id="wed-hours">8 hrs</small>
+            </div>
+            <div class="day-slot">
+              <strong>Thu</strong>
+              <small id="thu-hours">8 hrs</small>
+            </div>
+            <div class="day-slot">
+              <strong>Fri</strong>
+              <small id="fri-hours">8 hrs</small>
+            </div>
+            <div class="day-slot">
+              <strong>Sat</strong>
+              <small id="sat-hours">6 hrs</small>
+            </div>
+            <div class="day-slot">
+              <strong>Sun</strong>
+              <small id="sun-hours">6 hrs</small>
+            </div>
+          </div>
+          <button style="margin-top: 15px; width: 100%;" onclick="openTimetableModal()">
+            <i class="fas fa-edit"></i> Edit Schedule
+          </button>
+        </div>
+
+        <!-- Study Targets Card -->
+        <div class="card">
+          <h2><i class="fas fa-bullseye"></i> Study Goals</h2>
+          <div class="input-group">
+            <label>Daily Study Target (hours)</label>
+            <input type="number" id="studyTargetInput" min="1" max="16" value="4" placeholder="Enter hours">
+          </div>
+          <div class="stat">
+            <span>Your Goal</span>
+            <span class="stat-value" id="goalDisplay">4 hour/day</span>
+          </div>
+          <button style="width: 100%; margin-top: 15px;" onclick="updateStudyTarget()">
+            <i class="fas fa-save"></i> Save Target
+          </button>
+        </div>
+
+        <!-- Preferences Card -->
+        <div class="card">
+          <h2><i class="fas fa-sliders-h"></i> Preferences</h2>
+          <div class="input-group">
+            <label>Wake Up Time</label>
+            <input type="time" id="wakeTimeInput" value="07:00">
+          </div>
+          <div class="input-group">
+            <label>Focus Session Length (minutes)</label>
+            <input type="number" id="sessionLengthInput" min="15" max="120" value="25" placeholder="25">
+          </div>
+          <button style="width: 100%; margin-top: 15px;" onclick="savePreferences()">
+            <i class="fas fa-check"></i> Save Preferences
+          </button>
+        </div>
+
+        <!-- Today's Progress Card -->
+        <div class="card">
+          <h2><i class="fas fa-tasks"></i> Today's Progress</h2>
+          <div class="stat">
+            <span>Hours Studied Today</span>
+            <span class="stat-value" id="todayHours">0 hrs</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+          </div>
+          <small id="progressText" style="color: #999;">0 hrs of 4 hrs completed</small>
+          <button style="width: 100%; margin-top: 15px;" onclick="addStudyHour()">
+            <i class="fas fa-plus"></i> Add 1 Hour
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Main Dashboard -->
-    <div class="dashboard">
-      <!-- Quick Stats Card -->
-      <div class="card">
-        <h2><i class="fas fa-chart-line"></i> Quick Stats</h2>
-        <div class="stat">
-          <span>📈 Current Streak</span>
-          <span class="stat-value" id="streakDisplay">0 days</span>
-        </div>
-        <div class="stat">
-          <span>⏰ Wake Time</span>
-          <span class="stat-value" id="wakeTimeDisplay">7:00 AM</span>
-        </div>
-        <div class="stat">
-          <span>🎯 Study Target</span>
-          <span class="stat-value" id="studyTargetDisplay">0 hrs</span>
-        </div>
-        <div class="stat">
-          <span>😴 Sleep Hours</span>
-          <span class="stat-value" id="sleepHoursDisplay">0 hrs</span>
-        </div>
-        <button style="margin-top: 15px; width: 100%;" onclick="logTodaySession()">
-          <i class="fas fa-check-circle"></i> Log Today's Session
-        </button>
-      </div>
+    <!-- School/Academy Tab -->
+    <div id="school" class="tab-content">
+      <div class="dashboard">
+        <div class="card" style="grid-column: 1 / -1;">
+          <h2><i class="fas fa-school"></i> My Institutions</h2>
+          <div class="info-box">
+            <strong>Add your school/academy schedule</strong> to automatically generate a personalized study timetable that works around your class timings.
+          </div>
 
-      <!-- Badges Card - Full Width -->
-      <div class="card" style="grid-column: 1 / -1;">
-        <h2><i class="fas fa-trophy"></i> Achievement Badges (8 Total)</h2>
-        <div class="badges-grid" id="badgesGrid">
-          <!-- Badges will be rendered here -->
+          <div id="institutionsList"></div>
+
+          <button style="margin-top: 15px; width: 100%;" onclick="openAddInstitutionModal()">
+            <i class="fas fa-plus"></i> Add School/Academy
+          </button>
         </div>
       </div>
+    </div>
 
-      <!-- Focus Timer Card -->
-      <div class="card">
-        <h2><i class="fas fa-bolt"></i> Focus Timer</h2>
-        <div class="info-box">
-          <strong>Ready to focus?</strong> Click the button below to start a distraction-free study session.
-        </div>
-        <button style="margin-top: 15px; width: 100%;" onclick="toggleFocusMode()">
-          <i class="fas fa-play"></i> Start Focus Session
-        </button>
-      </div>
+    <!-- Generated Timetable Tab -->
+    <div id="generated" class="tab-content">
+      <div class="dashboard">
+        <div class="card" style="grid-column: 1 / -1;">
+          <h2><i class="fas fa-calendar-check"></i> Your Personalized Timetable</h2>
+          <div class="info-box">
+            <strong>This timetable is generated</strong> based on your school/academy timings, sleep requirements, and study goals. It optimizes your daily schedule for maximum productivity.
+          </div>
 
-      <!-- Weekly Schedule Card -->
-      <div class="card">
-        <h2><i class="fas fa-calendar-alt"></i> Weekly Schedule</h2>
-        <div class="timetable" id="timetableContainer">
-          <div class="day-slot">
-            <strong>Mon</strong>
-            <small id="mon-hours">8 hrs</small>
+          <div id="generatedScheduleContainer" class="generated-schedule" style="display: none;">
+            <!-- Schedule will be generated here -->
           </div>
-          <div class="day-slot">
-            <strong>Tue</strong>
-            <small id="tue-hours">8 hrs</small>
-          </div>
-          <div class="day-slot">
-            <strong>Wed</strong>
-            <small id="wed-hours">8 hrs</small>
-          </div>
-          <div class="day-slot">
-            <strong>Thu</strong>
-            <small id="thu-hours">8 hrs</small>
-          </div>
-          <div class="day-slot">
-            <strong>Fri</strong>
-            <small id="fri-hours">8 hrs</small>
-          </div>
-          <div class="day-slot">
-            <strong>Sat</strong>
-            <small id="sat-hours">6 hrs</small>
-          </div>
-          <div class="day-slot">
-            <strong>Sun</strong>
-            <small id="sun-hours">6 hrs</small>
-          </div>
-        </div>
-        <button style="margin-top: 15px; width: 100%;" onclick="openTimetableModal()">
-          <i class="fas fa-edit"></i> Edit Schedule
-        </button>
-      </div>
 
-      <!-- Study Targets Card -->
-      <div class="card">
-        <h2><i class="fas fa-bullseye"></i> Study Goals</h2>
-        <div class="input-group">
-          <label>Daily Study Target (hours)</label>
-          <input type="number" id="studyTargetInput" min="1" max="16" value="4" placeholder="Enter hours">
-        </div>
-        <div class="stat">
-          <span>Your Goal</span>
-          <span class="stat-value" id="goalDisplay">4 hour/day</span>
-        </div>
-        <button style="width: 100%; margin-top: 15px;" onclick="updateStudyTarget()">
-          <i class="fas fa-save"></i> Save Target
-        </button>
-      </div>
+          <div id="noScheduleMessage" class="info-box" style="background: #fff3cd; border-left-color: #ffc107; margin-top: 30px;">
+            <strong>⚠️ No Schedule Generated Yet</strong><br>
+            Add your school/academy details in the "School/Academy" tab to generate your personalized timetable.
+          </div>
 
-      <!-- Preferences Card -->
-      <div class="card">
-        <h2><i class="fas fa-sliders-h"></i> Preferences</h2>
-        <div class="input-group">
-          <label>Wake Up Time</label>
-          <input type="time" id="wakeTimeInput" value="07:00">
+          <button id="regenerateBtn" style="margin-top: 15px; width: 100%; display: none;" onclick="generateTimetable()">
+            <i class="fas fa-sync-alt"></i> Regenerate Schedule
+          </button>
         </div>
-        <div class="input-group">
-          <label>Focus Session Length (minutes)</label>
-          <input type="number" id="sessionLengthInput" min="15" max="120" value="25" placeholder="25">
-        </div>
-        <button style="width: 100%; margin-top: 15px;" onclick="savePreferences()">
-          <i class="fas fa-check"></i> Save Preferences
-        </button>
-      </div>
-
-      <!-- Today's Progress Card -->
-      <div class="card">
-        <h2><i class="fas fa-tasks"></i> Today's Study Progress</h2>
-        <div class="stat">
-          <span>Hours Studied Today</span>
-          <span class="stat-value" id="todayHours">0 hrs</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-        </div>
-        <small id="progressText" style="color: #999;">0 hrs of 4 hrs completed</small>
-        <button style="width: 100%; margin-top: 15px;" onclick="addStudyHour()">
-          <i class="fas fa-plus"></i> Add 1 Hour
-        </button>
       </div>
     </div>
   </div>
@@ -741,6 +846,49 @@
       <div class="modal-actions">
         <button class="secondary" onclick="closeModal('settingsModal')">Cancel</button>
         <button onclick="saveSettingsModal()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Institution Modal -->
+  <div class="modal" id="addInstitutionModal">
+    <div class="modal-content">
+      <h2><i class="fas fa-school"></i> Add School/Academy</h2>
+      <div class="form-group">
+        <label>Institution Name</label>
+        <input type="text" id="institutionName" placeholder="e.g., XYZ High School">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="institutionType">
+          <option value="school">School</option>
+          <option value="academy">Academy/Coaching</option>
+          <option value="college">College</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>School Start Time</label>
+        <input type="time" id="schoolStartTime" value="09:00">
+      </div>
+      <div class="form-group">
+        <label>School End Time</label>
+        <input type="time" id="schoolEndTime" value="15:00">
+      </div>
+      <div class="form-group">
+        <label>Working Days (Select all)</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+          <label><input type="checkbox" value="Mon" class="workday-check"> Monday</label>
+          <label><input type="checkbox" value="Tue" class="workday-check"> Tuesday</label>
+          <label><input type="checkbox" value="Wed" class="workday-check"> Wednesday</label>
+          <label><input type="checkbox" value="Thu" class="workday-check"> Thursday</label>
+          <label><input type="checkbox" value="Fri" class="workday-check"> Friday</label>
+          <label><input type="checkbox" value="Sat" class="workday-check"> Saturday</label>
+          <label><input type="checkbox" value="Sun" class="workday-check"> Sunday</label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="secondary" onclick="closeModal('addInstitutionModal')">Cancel</button>
+        <button onclick="addInstitution()">Add Institution</button>
       </div>
     </div>
   </div>
@@ -791,7 +939,8 @@
         preferences: {
           wakeTime: '07:00',
           studyTarget: 4,
-          sessionLength: 25
+          sessionLength: 25,
+          sleepHours: 8
         },
         timetable: {
           Mon: { studyHours: 8, sleepHours: 7 },
@@ -801,13 +950,11 @@
           Fri: { studyHours: 8, sleepHours: 7 },
           Sat: { studyHours: 6, sleepHours: 8 },
           Sun: { studyHours: 6, sleepHours: 8 }
-        }
+        },
+        institutions: []
       },
       streak: 0,
       todayHours: 0,
-      studyTasks: [],
-      unlockedBadges: [],
-      focusSessions: 0,
       generatedTimetable: {
         Mon: { sleepHours: 7 },
         Tue: { sleepHours: 7 },
@@ -821,74 +968,8 @@
         timerId: null,
         secondsLeft: 0,
         isPaused: false
-      }
-    };
-
-    // Badge Definitions
-    const BADGES = {
-      earlyBird: {
-        id: 'earlyBird',
-        name: 'Early Bird',
-        icon: '🌅',
-        description: 'Wake up before 7 AM',
-        condition: () => {
-          const wakeM = timeToMins(APP_STATE.data.preferences.wakeTime);
-          return wakeM <= 420;
-        }
       },
-      studyStreak: {
-        id: 'studyStreak',
-        name: 'On Fire',
-        icon: '🔥',
-        description: 'Complete 1+ day study streak',
-        condition: () => APP_STATE.streak >= 1
-      },
-      studyMaster: {
-        id: 'studyMaster',
-        name: 'Study Master',
-        icon: '🎓',
-        description: 'Set 4+ hours daily study goal',
-        condition: () => APP_STATE.data.preferences.studyTarget >= 4
-      },
-      balancedLife: {
-        id: 'balancedLife',
-        name: 'Balanced Life',
-        icon: '⚖️',
-        description: 'Schedule 7+ hours sleep',
-        condition: () => APP_STATE.generatedTimetable['Mon'].sleepHours >= 7
-      },
-      taskMaster: {
-        id: 'taskMaster',
-        name: 'Task Master',
-        icon: '✅',
-        description: 'Complete 10 study tasks',
-        condition: () => APP_STATE.studyTasks.filter(t => t.completed).length >= 10
-      },
-      focusNinja: {
-        id: 'focusNinja',
-        name: 'Focus Ninja',
-        icon: '🥋',
-        description: 'Complete 5 focus sessions',
-        condition: () => APP_STATE.focusSessions >= 5
-      },
-      weekWarrior: {
-        id: 'weekWarrior',
-        name: 'Week Warrior',
-        icon: '⚔️',
-        description: 'Study 4+ hrs all 7 days',
-        condition: () => {
-          const target = APP_STATE.data.preferences.studyTarget;
-          const days = Object.values(APP_STATE.data.timetable).filter(d => d.studyHours >= target).length;
-          return days >= 7;
-        }
-      },
-      productivityKing: {
-        id: 'productivityKing',
-        name: 'Productivity King',
-        icon: '👑',
-        description: 'Achieve 10+ hour study day',
-        condition: () => APP_STATE.todayHours >= 10
-      }
+      generatedSchedule: null
     };
 
     // Load data on page load
@@ -896,9 +977,23 @@
       loadStateFromLocalStorage();
       updateUIFromState();
       evaluateBadges();
-      renderBadges();
-      renderStudyTasks();
+      renderInstitutions();
+      if (APP_STATE.data.institutions.length > 0) {
+        generateTimetable();
+      }
     });
+
+    // ==================== Tab Navigation ====================
+    function switchTab(tabName) {
+      const contents = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-button');
+      
+      contents.forEach(content => content.classList.remove('active'));
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabName).classList.add('active');
+      event.target.closest('.tab-button').classList.add('active');
+    }
 
     // ==================== Utility Functions ====================
     function timeToMins(timeStr) {
@@ -906,10 +1001,15 @@
       return h * 60 + m;
     }
 
+    function minsToTime(mins) {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
     function updateUI() {
       updateUIFromState();
       evaluateBadges();
-      renderBadges();
       saveStateToLocalStorage();
     }
 
@@ -918,7 +1018,7 @@
       document.getElementById('streakDisplay').innerText = `${APP_STATE.streak} days`;
       document.getElementById('wakeTimeDisplay').innerText = formatTime(APP_STATE.data.preferences.wakeTime);
       document.getElementById('studyTargetDisplay').innerText = `${APP_STATE.data.preferences.studyTarget} hrs`;
-      document.getElementById('sleepHoursDisplay').innerText = `${APP_STATE.generatedTimetable.Mon.sleepHours} hrs`;
+      document.getElementById('sleepHoursDisplay').innerText = `${APP_STATE.data.preferences.sleepHours} hrs`;
       document.getElementById('goalDisplay').innerText = `${APP_STATE.data.preferences.studyTarget} hour${APP_STATE.data.preferences.studyTarget !== 1 ? 's' : ''}/day`;
       
       // Update today's progress
@@ -951,121 +1051,240 @@
 
     // ==================== Badge Functions ====================
     function evaluateBadges() {
-      const newUnlocked = [];
-      
-      Object.values(BADGES).forEach(badge => {
-        if (badge.condition()) {
-          if (!APP_STATE.unlockedBadges.includes(badge.id)) {
-            newUnlocked.push(badge.id);
-            showNotification(`🎉 Badge Unlocked: ${badge.name}!`);
-          }
-          if (!APP_STATE.unlockedBadges.includes(badge.id)) {
-            APP_STATE.unlockedBadges.push(badge.id);
-          }
-        }
-      });
+      const wakeM = timeToMins(APP_STATE.data.preferences.wakeTime);
+      updateBadge('badgeEarlyBird', 'tagEarlyBird', wakeM <= 420);
+      updateBadge('badgeStreak', 'tagStreak', APP_STATE.streak >= 1);
+      updateBadge('badgeMaster', 'tagMaster', APP_STATE.data.preferences.studyTarget >= 4);
+      updateBadge('badgeBalanced', 'tagBalanced', APP_STATE.data.preferences.sleepHours >= 7);
     }
 
-    function renderBadges() {
-      const badgesGrid = document.getElementById('badgesGrid');
-      
-      badgesGrid.innerHTML = Object.values(BADGES).map(badge => {
-        const unlocked = APP_STATE.unlockedBadges.includes(badge.id);
-        return `
-          <div class="badge-detail ${unlocked ? 'unlocked' : ''}">
-            <div class="badge-icon">${badge.icon}</div>
-            <div class="badge-name">${badge.name}</div>
-            <div class="badge-status" style="color: ${unlocked ? '#4caf50' : '#999'};">
-              ${unlocked ? '✓ Unlocked' : '🔒 Locked'}
-            </div>
-            <div class="badge-unlock-progress">${badge.description}</div>
-          </div>
-        `;
-      }).join('');
+    function updateBadge(cId, tId, unlocked) {
+      const card = document.getElementById(cId), tag = document.getElementById(tId);
+      card.style.opacity = unlocked ? '1' : '0.4';
+      card.classList.toggle('unlocked', unlocked);
+      card.classList.toggle('locked', !unlocked);
+      tag.innerText = unlocked ? 'Unlocked' : 'Locked';
     }
 
-    // ==================== Study Tasks ====================
-    function addStudyTask() {
-      const subject = document.getElementById('taskSubject').value.trim();
-      const topic = document.getElementById('taskTopic').value.trim();
-      const time = parseFloat(document.getElementById('taskTime').value);
+    // ==================== Institution Functions ====================
+    function openAddInstitutionModal() {
+      document.querySelectorAll('.workday-check').forEach(cb => cb.checked = false);
+      document.getElementById('institutionName').value = '';
+      document.getElementById('institutionType').value = 'school';
+      document.getElementById('schoolStartTime').value = '09:00';
+      document.getElementById('schoolEndTime').value = '15:00';
+      openModal('addInstitutionModal');
+    }
 
-      if (!subject || !topic || !time) {
-        alert('Please fill all fields');
+    function addInstitution() {
+      const name = document.getElementById('institutionName').value.trim();
+      const type = document.getElementById('institutionType').value;
+      const startTime = document.getElementById('schoolStartTime').value;
+      const endTime = document.getElementById('schoolEndTime').value;
+      const workdays = Array.from(document.querySelectorAll('.workday-check:checked')).map(cb => cb.value);
+
+      if (!name) {
+        alert('Please enter institution name');
+        return;
+      }
+      if (workdays.length === 0) {
+        alert('Please select at least one working day');
         return;
       }
 
-      const task = {
+      const institution = {
         id: Date.now(),
-        subject,
-        topic,
-        time,
-        completed: false,
-        createdAt: new Date().toISOString()
+        name,
+        type,
+        startTime,
+        endTime,
+        workdays
       };
 
-      APP_STATE.studyTasks.push(task);
-      
-      document.getElementById('taskSubject').value = '';
-      document.getElementById('taskTopic').value = '';
-      document.getElementById('taskTime').value = '1';
-
-      renderStudyTasks();
-      updateUI();
+      APP_STATE.data.institutions.push(institution);
       saveStateToLocalStorage();
+      renderInstitutions();
+      closeModal('addInstitutionModal');
+      generateTimetable();
+      alert('✅ Institution added successfully!');
     }
 
-    function completeStudyTask(id) {
-      const task = APP_STATE.studyTasks.find(t => t.id === id);
-      if (task) {
-        task.completed = !task.completed;
-        if (task.completed) {
-          APP_STATE.todayHours += task.time;
-          showNotification(`✅ Task completed! +${task.time} hours`);
-        } else {
-          APP_STATE.todayHours -= task.time;
-        }
-        renderStudyTasks();
-        updateUI();
-        saveStateToLocalStorage();
+    function removeInstitution(id) {
+      APP_STATE.data.institutions = APP_STATE.data.institutions.filter(inst => inst.id !== id);
+      saveStateToLocalStorage();
+      renderInstitutions();
+      if (APP_STATE.data.institutions.length > 0) {
+        generateTimetable();
+      } else {
+        document.getElementById('generatedScheduleContainer').style.display = 'none';
+        document.getElementById('noScheduleMessage').style.display = 'block';
+        document.getElementById('regenerateBtn').style.display = 'none';
       }
     }
 
-    function deleteStudyTask(id) {
-      const task = APP_STATE.studyTasks.find(t => t.id === id);
-      if (task && task.completed) {
-        APP_STATE.todayHours -= task.time;
-      }
-      APP_STATE.studyTasks = APP_STATE.studyTasks.filter(t => t.id !== id);
-      renderStudyTasks();
-      updateUI();
-      saveStateToLocalStorage();
-    }
-
-    function renderStudyTasks() {
-      const container = document.getElementById('tasksContainer');
-      
-      if (APP_STATE.studyTasks.length === 0) {
-        container.innerHTML = '<div class="empty-message">No tasks added yet. Add one to get started!</div>';
+    function renderInstitutions() {
+      const container = document.getElementById('institutionsList');
+      if (APP_STATE.data.institutions.length === 0) {
+        container.innerHTML = '<div class="info-box">No institutions added yet. Click the button below to add your school or academy.</div>';
         return;
       }
 
-      container.innerHTML = APP_STATE.studyTasks.map(task => `
-        <div class="study-task-item ${task.completed ? 'completed' : ''}">
-          <input 
-            type="checkbox" 
-            ${task.completed ? 'checked' : ''}
-            onchange="completeStudyTask(${task.id})"
-          >
-          <div class="study-task-content">
-            <div class="study-task-title">${task.subject} - ${task.topic}</div>
-            <div class="study-task-meta">
-              <span>⏱️ ${task.time} hour${task.time > 1 ? 's' : ''}</span>
+      container.innerHTML = APP_STATE.data.institutions.map(inst => `
+        <div class="institution-card">
+          <div class="institution-header">
+            <div>
+              <div class="institution-name">📚 ${inst.name}</div>
+              <div class="institution-time">${inst.type.toUpperCase()} • ${inst.startTime} - ${inst.endTime}</div>
+              <small style="color: #666;">Working Days: ${inst.workdays.join(', ')}</small>
             </div>
+            <button class="remove-btn" onclick="removeInstitution(${inst.id})">
+              <i class="fas fa-trash"></i> Remove
+            </button>
           </div>
-          <button class="task-delete" onclick="deleteStudyTask(${task.id})">Delete</button>
         </div>
       `).join('');
+    }
+
+    // ==================== Generate Timetable Function ====================
+    function generateTimetable() {
+      if (APP_STATE.data.institutions.length === 0) {
+        document.getElementById('generatedScheduleContainer').style.display = 'none';
+        document.getElementById('noScheduleMessage').style.display = 'block';
+        document.getElementById('regenerateBtn').style.display = 'none';
+        return;
+      }
+
+      const schedule = {};
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+      days.forEach(day => {
+        schedule[day] = [];
+
+        // Get sleep and wake time
+        const wakeTimeStr = APP_STATE.data.preferences.wakeTime;
+        const [wakeH, wakeM] = wakeTimeStr.split(':').map(Number);
+        const wakeMins = wakeH * 60 + wakeM;
+        
+        const sleepHours = APP_STATE.data.preferences.sleepHours;
+        const sleepMins = sleepHours * 60;
+        const sleepStartMins = wakeMins - sleepMins;
+        
+        // Sleep time
+        if (sleepStartMins > 0) {
+          schedule[day].push({
+            activity: '😴 Sleep',
+            startMins: sleepStartMins,
+            durationMins: sleepMins
+          });
+        }
+
+        // Morning routine
+        schedule[day].push({
+          activity: '🌅 Morning Routine',
+          startMins: wakeMins,
+          durationMins: 60
+        });
+
+        // Breakfast
+        schedule[day].push({
+          activity: '🍳 Breakfast',
+          startMins: wakeMins + 60,
+          durationMins: 30
+        });
+
+        // School/Academy times
+        APP_STATE.data.institutions.forEach(inst => {
+          if (inst.workdays.includes(day)) {
+            const [startH, startM] = inst.startTime.split(':').map(Number);
+            const [endH, endM] = inst.endTime.split(':').map(Number);
+            const startMins = startH * 60 + startM;
+            const endMins = endH * 60 + endM;
+            const durationMins = endMins - startMins;
+
+            schedule[day].push({
+              activity: `🏫 ${inst.name}`,
+              startMins: startMins,
+              durationMins: durationMins
+            });
+          }
+        });
+
+        // Lunch time (around 1 PM)
+        schedule[day].push({
+          activity: '🍽️ Lunch & Break',
+          startMins: 13 * 60,
+          durationMins: 60
+        });
+
+        // Free time/Play
+        schedule[day].push({
+          activity: '🎮 Free Time/Recreation',
+          startMins: 17 * 60,
+          durationMins: 60
+        });
+
+        // Dinner
+        schedule[day].push({
+          activity: '🍜 Dinner',
+          startMins: 19 * 60,
+          durationMins: 45
+        });
+
+        // Study time (personal study)
+        const remainingMins = 24 * 60 - sleepMins - 60 - 30 - 60 - 60 - 60 - 45; // Remaining time
+        schedule[day].push({
+          activity: '📚 Personal Study/Homework',
+          startMins: 20 * 60,
+          durationMins: Math.min(APP_STATE.data.preferences.studyTarget * 60, remainingMins)
+        });
+      });
+
+      APP_STATE.generatedSchedule = schedule;
+      saveStateToLocalStorage();
+      renderGeneratedSchedule(schedule);
+    }
+
+    function renderGeneratedSchedule(schedule) {
+      const container = document.getElementById('generatedScheduleContainer');
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+      let html = '<div style="margin-top: 20px;">';
+      
+      days.forEach(day => {
+        const daySchedule = schedule[day];
+        daySchedule.sort((a, b) => a.startMins - b.startMins);
+
+        html += `
+          <div style="margin-bottom: 30px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📅 ${day}</h3>
+        `;
+
+        daySchedule.forEach(item => {
+          const h = Math.floor(item.startMins / 60);
+          const m = item.startMins % 60;
+          const dh = Math.floor(item.durationMins / 60);
+          const dm = item.durationMins % 60;
+          const startTime = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+          const duration = dh > 0 ? `${dh}h ${dm}m` : `${dm}m`;
+
+          html += `
+            <div class="schedule-item">
+              <span class="schedule-time">${startTime}</span>
+              <span class="schedule-activity">${item.activity}</span>
+              <span class="schedule-duration">${duration}</span>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+      });
+
+      html += '</div>';
+
+      container.innerHTML = html;
+      container.style.display = 'block';
+      document.getElementById('noScheduleMessage').style.display = 'none';
+      document.getElementById('regenerateBtn').style.display = 'inline-flex';
     }
 
     // ==================== Focus Timer Functions ====================
@@ -1091,8 +1310,8 @@
           if (APP_STATE.focusTimer.secondsLeft <= 0) {
             clearInterval(APP_STATE.focusTimer.timerId);
             alert('🎉 Focus Session Complete! Great work!');
-            APP_STATE.focusSessions++;
             toggleFocusMode();
+            addStudyHour();
           }
         }
       }, 1000);
@@ -1117,10 +1336,8 @@
     function logTodaySession() {
       APP_STATE.streak++;
       APP_STATE.todayHours = 0;
-      APP_STATE.studyTasks = [];
       updateUI();
-      renderStudyTasks();
-      showNotification(`🔥 Great job! Streak now at ${APP_STATE.streak} days!`);
+      alert(`🔥 Great job! Streak now at ${APP_STATE.streak} days!`);
     }
 
     // ==================== Settings Functions ====================
@@ -1136,6 +1353,9 @@
       APP_STATE.data.preferences.wakeTime = document.getElementById('modalWakeTime').value;
       APP_STATE.data.preferences.sessionLength = parseInt(document.getElementById('modalSessionLength').value);
       updateUI();
+      if (APP_STATE.data.institutions.length > 0) {
+        generateTimetable();
+      }
       closeModal('settingsModal');
       alert('✅ Settings saved successfully!');
     }
@@ -1144,12 +1364,18 @@
       APP_STATE.data.preferences.wakeTime = document.getElementById('wakeTimeInput').value;
       APP_STATE.data.preferences.sessionLength = parseInt(document.getElementById('sessionLengthInput').value);
       updateUI();
+      if (APP_STATE.data.institutions.length > 0) {
+        generateTimetable();
+      }
       alert('✅ Preferences saved!');
     }
 
     function updateStudyTarget() {
       APP_STATE.data.preferences.studyTarget = parseInt(document.getElementById('studyTargetInput').value);
       updateUI();
+      if (APP_STATE.data.institutions.length > 0) {
+        generateTimetable();
+      }
       alert('✅ Study target updated!');
     }
 
@@ -1190,10 +1416,8 @@
         APP_STATE.data = loaded.data || APP_STATE.data;
         APP_STATE.streak = loaded.streak || 0;
         APP_STATE.todayHours = loaded.todayHours || 0;
-        APP_STATE.studyTasks = loaded.studyTasks || [];
-        APP_STATE.unlockedBadges = loaded.unlockedBadges || [];
-        APP_STATE.focusSessions = loaded.focusSessions || 0;
         APP_STATE.generatedTimetable = loaded.generatedTimetable || APP_STATE.generatedTimetable;
+        APP_STATE.generatedSchedule = loaded.generatedSchedule || null;
       }
     }
 
@@ -1216,18 +1440,6 @@
     // ==================== Export Functions ====================
     function triggerPrintPDF() {
       window.print();
-    }
-
-    // ==================== Notifications ====================
-    function showNotification(message) {
-      const notification = document.createElement('div');
-      notification.className = 'notification';
-      notification.textContent = message;
-      document.body.appendChild(notification);
-
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
     }
   </script>
 </body>
