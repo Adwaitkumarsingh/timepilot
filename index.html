@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimePilot - Smart Study Scheduler</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      color: #667eea;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    button.secondary {
+      background: #f0f0f0;
+      color: #333;
+      border: 2px solid #667eea;
+    }
+
+    button.secondary:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .badges-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .badge-card {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      opacity: 0.4;
+    }
+
+    .badge-card:hover {
+      transform: scale(1.05);
+      border-color: #667eea;
+    }
+
+    .badge-card.unlocked {
+      background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+      opacity: 1;
+    }
+
+    .badge-icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .badge-name {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .badge-status {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .timetable {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .day-slot {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      border-left: 4px solid #667eea;
+    }
+
+    .day-slot strong {
+      display: block;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+
+    .day-slot small {
+      color: #999;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .stat:last-child {
+      border-bottom: none;
+    }
+
+    .stat-value {
+      color: #667eea;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .focus-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .focus-overlay:not(.hidden) {
+      display: flex;
+    }
+
+    .focus-overlay.hidden {
+      display: none;
+    }
+
+    .focus-content {
+      text-align: center;
+      color: white;
+    }
+
+    .focus-timer-display {
+      font-size: 120px;
+      font-weight: bold;
+      color: #ffd89b;
+      margin: 30px 0;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 20px rgba(255, 216, 155, 0.5);
+    }
+
+    .focus-controls {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .focus-controls button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    .focus-quit {
+      background: #ff6b6b;
+    }
+
+    .focus-quit:hover {
+      background: #ee5a52;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-content h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+    }
+
+    .modal-content .form-group {
+      margin-bottom: 15px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .modal-actions button {
+      flex: 1;
+    }
+
+    .streak-display {
+      font-size: 36px;
+      color: #667eea;
+      font-weight: bold;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .info-box {
+      background: #e8f4f8;
+      border-left: 4px solid #667eea;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 15px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      transition: width 0.3s ease;
+    }
+
+    .chart-placeholder {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      color: #999;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .focus-timer-display {
+        font-size: 80px;
+      }
+
+      .header-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .badges-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .header-actions,
+      button,
+      .modal {
+        display: none;
+      }
+
+      .dashboard {
+        gap: 15px;
+      }
+
+      .card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1><i class="fas fa-clock"></i> TimePilot</h1>
+      <div class="header-actions">
+        <button onclick="openSettingsModal()"><i class="fas fa-cog"></i> Settings</button>
+        <button class="secondary" onclick="triggerPrintPDF()"><i class="fas fa-print"></i> Export PDF</button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard">
+      <!-- Quick Stats Card -->
+      <div class="card">
+        <h2><i class="fas fa-chart-line"></i> Quick Stats</h2>
+        <div class="stat">
+          <span>📈 Current Streak</span>
+          <span class="stat-value" id="streakDisplay">0 days</span>
+        </div>
+        <div class="stat">
+          <span>⏰ Wake Time</span>
+          <span class="stat-value" id="wakeTimeDisplay">7:00 AM</span>
+        </div>
+        <div class="stat">
+          <span>🎯 Study Target</span>
+          <span class="stat-value" id="studyTargetDisplay">0 hrs</span>
+        </div>
+        <div class="stat">
+          <span>😴 Sleep Hours</span>
+          <span class="stat-value" id="sleepHoursDisplay">0 hrs</span>
+        </div>
+        <button style="margin-top: 15px; width: 100%;" onclick="logTodaySession()">
+          <i class="fas fa-check-circle"></i> Log Today's Session
+        </button>
+      </div>
+
+      <!-- Badges Card -->
+      <div class="card">
+        <h2><i class="fas fa-trophy"></i> Achievements</h2>
+        <div class="badges-container">
+          <div class="badge-card" id="badgeEarlyBird">
+            <div class="badge-icon">🌅</div>
+            <div class="badge-name">Early Bird</div>
+            <div class="badge-status" id="tagEarlyBird">Locked</div>
+          </div>
+          <div class="badge-card" id="badgeStreak">
+            <div class="badge-icon">🔥</div>
+            <div class="badge-name">On Fire</div>
+            <div class="badge-status" id="tagStreak">Locked</div>
+          </div>
+          <div class="badge-card" id="badgeMaster">
+            <div class="badge-icon">🎓</div>
+            <div class="badge-name">Study Master</div>
+            <div class="badge-status" id="tagMaster">Locked</div>
+          </div>
+          <div class="badge-card" id="badgeBalanced">
+            <div class="badge-icon">⚖️</div>
+            <div class="badge-name">Balanced Life</div>
+            <div class="badge-status" id="tagBalanced">Locked</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Focus Timer Card -->
+      <div class="card">
+        <h2><i class="fas fa-bolt"></i> Focus Timer</h2>
+        <div class="info-box">
+          <strong>Ready to focus?</strong> Click the button below to start a distraction-free study session.
+        </div>
+        <button style="margin-top: 15px; width: 100%;" onclick="toggleFocusMode()">
+          <i class="fas fa-play"></i> Start Focus Session
+        </button>
+      </div>
+
+      <!-- Weekly Schedule Card -->
+      <div class="card">
+        <h2><i class="fas fa-calendar-alt"></i> Weekly Schedule</h2>
+        <div class="timetable" id="timetableContainer">
+          <div class="day-slot">
+            <strong>Mon</strong>
+            <small id="mon-hours">8 hrs</small>
+          </div>
+          <div class="day-slot">
+            <strong>Tue</strong>
+            <small id="tue-hours">8 hrs</small>
+          </div>
+          <div class="day-slot">
+            <strong>Wed</strong>
+            <small id="wed-hours">8 hrs</small>
+          </div>
+          <div class="day-slot">
+            <strong>Thu</strong>
+            <small id="thu-hours">8 hrs</small>
+          </div>
+          <div class="day-slot">
+            <strong>Fri</strong>
+            <small id="fri-hours">8 hrs</small>
+          </div>
+          <div class="day-slot">
+            <strong>Sat</strong>
+            <small id="sat-hours">6 hrs</small>
+          </div>
+          <div class="day-slot">
+            <strong>Sun</strong>
+            <small id="sun-hours">6 hrs</small>
+          </div>
+        </div>
+        <button style="margin-top: 15px; width: 100%;" onclick="openTimetableModal()">
+          <i class="fas fa-edit"></i> Edit Schedule
+        </button>
+      </div>
+
+      <!-- Study Targets Card -->
+      <div class="card">
+        <h2><i class="fas fa-bullseye"></i> Study Goals</h2>
+        <div class="input-group">
+          <label>Daily Study Target (hours)</label>
+          <input type="number" id="studyTargetInput" min="1" max="16" value="4" placeholder="Enter hours">
+        </div>
+        <div class="stat">
+          <span>Your Goal</span>
+          <span class="stat-value" id="goalDisplay">4 hour/day</span>
+        </div>
+        <button style="width: 100%; margin-top: 15px;" onclick="updateStudyTarget()">
+          <i class="fas fa-save"></i> Save Target
+        </button>
+      </div>
+
+      <!-- Preferences Card -->
+      <div class="card">
+        <h2><i class="fas fa-sliders-h"></i> Preferences</h2>
+        <div class="input-group">
+          <label>Wake Up Time</label>
+          <input type="time" id="wakeTimeInput" value="07:00">
+        </div>
+        <div class="input-group">
+          <label>Focus Session Length (minutes)</label>
+          <input type="number" id="sessionLengthInput" min="15" max="120" value="25" placeholder="25">
+        </div>
+        <button style="width: 100%; margin-top: 15px;" onclick="savePreferences()">
+          <i class="fas fa-check"></i> Save Preferences
+        </button>
+      </div>
+
+      <!-- Today's Progress Card -->
+      <div class="card">
+        <h2><i class="fas fa-tasks"></i> Today's Progress</h2>
+        <div class="stat">
+          <span>Hours Studied Today</span>
+          <span class="stat-value" id="todayHours">0 hrs</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <small id="progressText" style="color: #999;">0 hrs of 4 hrs completed</small>
+        <button style="width: 100%; margin-top: 15px;" onclick="addStudyHour()">
+          <i class="fas fa-plus"></i> Add 1 Hour
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Focus Mode Overlay -->
+  <div class="focus-overlay hidden" id="focusOverlay">
+    <div class="focus-content">
+      <h1 style="font-size: 48px; margin-bottom: 20px;">🎯 Focus Time</h1>
+      <p style="font-size: 20px; margin-bottom: 30px;">Eliminate distractions. Get things done.</p>
+      <div class="focus-timer-display" id="focusTimerDisplay">25:00</div>
+      <div class="focus-controls">
+        <button onclick="toggleFocusTimer()">
+          <i class="fas fa-play" id="focusPlayIcon"></i>
+        </button>
+        <button class="focus-quit" onclick="toggleFocusMode()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <h2><i class="fas fa-cog"></i> Settings</h2>
+      <div class="form-group">
+        <label>Daily Study Target (hours)</label>
+        <input type="number" id="modalStudyTarget" min="1" max="16" value="4">
+      </div>
+      <div class="form-group">
+        <label>Wake Up Time</label>
+        <input type="time" id="modalWakeTime" value="07:00">
+      </div>
+      <div class="form-group">
+        <label>Focus Session Length (minutes)</label>
+        <input type="number" id="modalSessionLength" min="15" max="120" value="25">
+      </div>
+      <div class="modal-actions">
+        <button class="secondary" onclick="closeModal('settingsModal')">Cancel</button>
+        <button onclick="saveSettingsModal()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timetable Edit Modal -->
+  <div class="modal" id="timetableModal">
+    <div class="modal-content">
+      <h2><i class="fas fa-calendar-alt"></i> Edit Weekly Schedule</h2>
+      <div class="form-group">
+        <label>Monday Study Hours</label>
+        <input type="number" id="monInput" min="0" max="16" value="8" step="0.5">
+      </div>
+      <div class="form-group">
+        <label>Tuesday Study Hours</label>
+        <input type="number" id="tueInput" min="0" max="16" value="8" step="0.5">
+      </div>
+      <div class="form-group">
+        <label>Wednesday Study Hours</label>
+        <input type="number" id="wedInput" min="0" max="16" value="8" step="0.5">
+      </div>
+      <div class="form-group">
+        <label>Thursday Study Hours</label>
+        <input type="number" id="thuInput" min="0" max="16" value="8" step="0.5">
+      </div>
+      <div class="form-group">
+        <label>Friday Study Hours</label>
+        <input type="number" id="friInput" min="0" max="16" value="8" step="0.5">
+      </div>
+      <div class="form-group">
+        <label>Saturday Study Hours</label>
+        <input type="number" id="satInput" min="0" max="16" value="6" step="0.5">
+      </div>
+      <div class="form-group">
+        <label>Sunday Study Hours</label>
+        <input type="number" id="sunInput" min="0" max="16" value="6" step="0.5">
+      </div>
+      <div class="modal-actions">
+        <button class="secondary" onclick="closeModal('timetableModal')">Cancel</button>
+        <button onclick="saveTimetable()">Save Schedule</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize APP_STATE
+    const APP_STATE = {
+      data: {
+        preferences: {
+          wakeTime: '07:00',
+          studyTarget: 4,
+          sessionLength: 25
+        },
+        timetable: {
+          Mon: { studyHours: 8, sleepHours: 7 },
+          Tue: { studyHours: 8, sleepHours: 7 },
+          Wed: { studyHours: 8, sleepHours: 7 },
+          Thu: { studyHours: 8, sleepHours: 7 },
+          Fri: { studyHours: 8, sleepHours: 7 },
+          Sat: { studyHours: 6, sleepHours: 8 },
+          Sun: { studyHours: 6, sleepHours: 8 }
+        }
+      },
+      streak: 0,
+      todayHours: 0,
+      generatedTimetable: {
+        Mon: { sleepHours: 7 },
+        Tue: { sleepHours: 7 },
+        Wed: { sleepHours: 7 },
+        Thu: { sleepHours: 7 },
+        Fri: { sleepHours: 7 },
+        Sat: { sleepHours: 8 },
+        Sun: { sleepHours: 8 }
+      },
+      focusTimer: {
+        timerId: null,
+        secondsLeft: 0,
+        isPaused: false
+      }
+    };
+
+    // Load data on page load
+    window.addEventListener('load', () => {
+      loadStateFromLocalStorage();
+      updateUIFromState();
+      evaluateBadges();
+    });
+
+    // ==================== Utility Functions ====================
+    function timeToMins(timeStr) {
+      const [h, m] = timeStr.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function updateUI() {
+      updateUIFromState();
+      evaluateBadges();
+      saveStateToLocalStorage();
+    }
+
+    function updateUIFromState() {
+      // Update quick stats
+      document.getElementById('streakDisplay').innerText = `${APP_STATE.streak} days`;
+      document.getElementById('wakeTimeDisplay').innerText = formatTime(APP_STATE.data.preferences.wakeTime);
+      document.getElementById('studyTargetDisplay').innerText = `${APP_STATE.data.preferences.studyTarget} hrs`;
+      document.getElementById('sleepHoursDisplay').innerText = `${APP_STATE.generatedTimetable.Mon.sleepHours} hrs`;
+      document.getElementById('goalDisplay').innerText = `${APP_STATE.data.preferences.studyTarget} hour${APP_STATE.data.preferences.studyTarget !== 1 ? 's' : ''}/day`;
+      
+      // Update today's progress
+      document.getElementById('todayHours').innerText = `${APP_STATE.todayHours} hrs`;
+      const percentage = (APP_STATE.todayHours / APP_STATE.data.preferences.studyTarget) * 100;
+      document.getElementById('progressFill').style.width = Math.min(percentage, 100) + '%';
+      document.getElementById('progressText').innerText = `${APP_STATE.todayHours} hrs of ${APP_STATE.data.preferences.studyTarget} hrs completed`;
+
+      // Update timetable display
+      document.getElementById('mon-hours').innerText = `${APP_STATE.data.timetable.Mon.studyHours} hrs`;
+      document.getElementById('tue-hours').innerText = `${APP_STATE.data.timetable.Tue.studyHours} hrs`;
+      document.getElementById('wed-hours').innerText = `${APP_STATE.data.timetable.Wed.studyHours} hrs`;
+      document.getElementById('thu-hours').innerText = `${APP_STATE.data.timetable.Thu.studyHours} hrs`;
+      document.getElementById('fri-hours').innerText = `${APP_STATE.data.timetable.Fri.studyHours} hrs`;
+      document.getElementById('sat-hours').innerText = `${APP_STATE.data.timetable.Sat.studyHours} hrs`;
+      document.getElementById('sun-hours').innerText = `${APP_STATE.data.timetable.Sun.studyHours} hrs`;
+
+      // Update input fields
+      document.getElementById('wakeTimeInput').value = APP_STATE.data.preferences.wakeTime;
+      document.getElementById('sessionLengthInput').value = APP_STATE.data.preferences.sessionLength;
+      document.getElementById('studyTargetInput').value = APP_STATE.data.preferences.studyTarget;
+    }
+
+    function formatTime(timeStr) {
+      const [h, m] = timeStr.split(':').map(Number);
+      const period = h >= 12 ? 'PM' : 'AM';
+      const displayH = h % 12 || 12;
+      return `${displayH}:${String(m).padStart(2, '0')} ${period}`;
+    }
+
+    // ==================== Badge Functions ====================
+    function evaluateBadges() {
+      const wakeM = timeToMins(APP_STATE.data.preferences.wakeTime);
+      updateBadge('badgeEarlyBird', 'tagEarlyBird', wakeM <= 420);
+      updateBadge('badgeStreak', 'tagStreak', APP_STATE.streak >= 1);
+      updateBadge('badgeMaster', 'tagMaster', APP_STATE.data.preferences.studyTarget >= 4);
+      updateBadge('badgeBalanced', 'tagBalanced', APP_STATE.generatedTimetable['Mon'].sleepHours >= 7);
+    }
+
+    function updateBadge(cId, tId, unlocked) {
+      const card = document.getElementById(cId), tag = document.getElementById(tId);
+      card.style.opacity = unlocked ? '1' : '0.4';
+      card.classList.toggle('unlocked', unlocked);
+      card.classList.toggle('locked', !unlocked);
+      tag.innerText = unlocked ? 'Unlocked' : 'Locked';
+    }
+
+    // ==================== Focus Timer Functions ====================
+    function toggleFocusMode() {
+      const overlay = document.getElementById('focusOverlay');
+      overlay.classList.toggle('hidden');
+      if (!overlay.classList.contains('hidden')) {
+        startFocusTimer(APP_STATE.data.preferences.sessionLength * 60);
+      } else {
+        clearInterval(APP_STATE.focusTimer.timerId);
+      }
+    }
+
+    function startFocusTimer(sec) {
+      clearInterval(APP_STATE.focusTimer.timerId);
+      APP_STATE.focusTimer.secondsLeft = sec;
+      APP_STATE.focusTimer.isPaused = false;
+      updateFocusDisplay();
+      APP_STATE.focusTimer.timerId = setInterval(() => {
+        if (!APP_STATE.focusTimer.isPaused) {
+          APP_STATE.focusTimer.secondsLeft--;
+          updateFocusDisplay();
+          if (APP_STATE.focusTimer.secondsLeft <= 0) {
+            clearInterval(APP_STATE.focusTimer.timerId);
+            alert('🎉 Focus Session Complete! Great work!');
+            toggleFocusMode();
+            addStudyHour();
+          }
+        }
+      }, 1000);
+    }
+
+    function toggleFocusTimer() {
+      APP_STATE.focusTimer.isPaused = !APP_STATE.focusTimer.isPaused;
+      document.getElementById('focusPlayIcon').className = APP_STATE.focusTimer.isPaused ? 'fas fa-play' : 'fas fa-pause';
+    }
+
+    function updateFocusDisplay() {
+      const m = Math.floor(APP_STATE.focusTimer.secondsLeft / 60), s = APP_STATE.focusTimer.secondsLeft % 60;
+      document.getElementById('focusTimerDisplay').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    // ==================== Study Tracking ====================
+    function addStudyHour() {
+      APP_STATE.todayHours++;
+      updateUI();
+    }
+
+    function logTodaySession() {
+      APP_STATE.streak++;
+      APP_STATE.todayHours = 0;
+      updateUI();
+      alert(`🔥 Great job! Streak now at ${APP_STATE.streak} days!`);
+    }
+
+    // ==================== Settings Functions ====================
+    function openSettingsModal() {
+      document.getElementById('modalStudyTarget').value = APP_STATE.data.preferences.studyTarget;
+      document.getElementById('modalWakeTime').value = APP_STATE.data.preferences.wakeTime;
+      document.getElementById('modalSessionLength').value = APP_STATE.data.preferences.sessionLength;
+      openModal('settingsModal');
+    }
+
+    function saveSettingsModal() {
+      APP_STATE.data.preferences.studyTarget = parseInt(document.getElementById('modalStudyTarget').value);
+      APP_STATE.data.preferences.wakeTime = document.getElementById('modalWakeTime').value;
+      APP_STATE.data.preferences.sessionLength = parseInt(document.getElementById('modalSessionLength').value);
+      updateUI();
+      closeModal('settingsModal');
+      alert('✅ Settings saved successfully!');
+    }
+
+    function savePreferences() {
+      APP_STATE.data.preferences.wakeTime = document.getElementById('wakeTimeInput').value;
+      APP_STATE.data.preferences.sessionLength = parseInt(document.getElementById('sessionLengthInput').value);
+      updateUI();
+      alert('✅ Preferences saved!');
+    }
+
+    function updateStudyTarget() {
+      APP_STATE.data.preferences.studyTarget = parseInt(document.getElementById('studyTargetInput').value);
+      updateUI();
+      alert('✅ Study target updated!');
+    }
+
+    // ==================== Timetable Functions ====================
+    function openTimetableModal() {
+      document.getElementById('monInput').value = APP_STATE.data.timetable.Mon.studyHours;
+      document.getElementById('tueInput').value = APP_STATE.data.timetable.Tue.studyHours;
+      document.getElementById('wedInput').value = APP_STATE.data.timetable.Wed.studyHours;
+      document.getElementById('thuInput').value = APP_STATE.data.timetable.Thu.studyHours;
+      document.getElementById('friInput').value = APP_STATE.data.timetable.Fri.studyHours;
+      document.getElementById('satInput').value = APP_STATE.data.timetable.Sat.studyHours;
+      document.getElementById('sunInput').value = APP_STATE.data.timetable.Sun.studyHours;
+      openModal('timetableModal');
+    }
+
+    function saveTimetable() {
+      APP_STATE.data.timetable.Mon.studyHours = parseFloat(document.getElementById('monInput').value);
+      APP_STATE.data.timetable.Tue.studyHours = parseFloat(document.getElementById('tueInput').value);
+      APP_STATE.data.timetable.Wed.studyHours = parseFloat(document.getElementById('wedInput').value);
+      APP_STATE.data.timetable.Thu.studyHours = parseFloat(document.getElementById('thuInput').value);
+      APP_STATE.data.timetable.Fri.studyHours = parseFloat(document.getElementById('friInput').value);
+      APP_STATE.data.timetable.Sat.studyHours = parseFloat(document.getElementById('satInput').value);
+      APP_STATE.data.timetable.Sun.studyHours = parseFloat(document.getElementById('sunInput').value);
+      updateUI();
+      closeModal('timetableModal');
+      alert('✅ Schedule updated!');
+    }
+
+    // ==================== Storage Functions ====================
+    function saveStateToLocalStorage() {
+      localStorage.setItem('timepilot_data', JSON.stringify(APP_STATE));
+    }
+
+    function loadStateFromLocalStorage() {
+      const saved = localStorage.getItem('timepilot_data');
+      if (saved) {
+        const loaded = JSON.parse(saved);
+        APP_STATE.data = loaded.data || APP_STATE.data;
+        APP_STATE.streak = loaded.streak || 0;
+        APP_STATE.todayHours = loaded.todayHours || 0;
+        APP_STATE.generatedTimetable = loaded.generatedTimetable || APP_STATE.generatedTimetable;
+      }
+    }
+
+    // ==================== Modal Functions ====================
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('show');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+    }
+
+    // Close modal on background click
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('show');
+      }
+    });
+
+    // ==================== Export Functions ====================
+    function triggerPrintPDF() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
